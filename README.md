@@ -68,3 +68,6 @@ Generated and private data (`data/`, `logs/`, `backups/`, approvals) is git-igno
 
 ## Requirements
 Windows 10/11, Python 3.10+, Git, PowerShell. Optional: Claude Code, Codex CLI, Orca, Obsidian, Graphify (`graphifyy`).
+
+## License
+[MIT](LICENSE). The guard is a safety net, not a sandbox: review `config/guard.json` for your own setup.
