@@ -1,0 +1,122 @@
+{
+  "_comment": "myOS machine configuration: the single home for where things live. Paths accept ~, %VAR% and $VAR; relative paths are relative to the myOS folder. Override with MYOS_VAULT / MYOS_PROJECTS_ROOT / MYOS_ORCA_WORKSPACES.",
+  "vault": "examples/demo-vault",
+  "vault_name": "demo-vault",
+  "projects_root": "~/projects",
+  "orca_workspaces": "~/orca/workspaces",
+  "timezone_note": "Timestamps are local machine time with UTC offset.",
+  "vault_layout": {
+    "_comment": "PARA mapped onto the vault's existing numbered folders. Nothing is renamed.",
+    "inbox": "00-INBOX",
+    "projects": "03-PROJECTS",
+    "areas": "02-AREAS",
+    "resources": [
+      "04-RESEARCH",
+      "05-TECH-RUNBOOKS"
+    ],
+    "archive": "06-ARCHIVE",
+    "templates": "07-TEMPLATES/myOS",
+    "personal_excluded": "01-LIFE",
+    "sessions_subdir": "sessions"
+  },
+  "search": {
+    "_comment": "Folders agents may search with /context-search. 01-LIFE (personal) is deliberately absent.",
+    "include": [
+      "00-NOW.md",
+      "00-TODO.md",
+      "03-PROJECTS",
+      "02-AREAS",
+      "04-RESEARCH",
+      "05-TECH-RUNBOOKS",
+      "06-ARCHIVE"
+    ],
+    "exclude_dir_names": [
+      ".obsidian",
+      ".git",
+      ".trash",
+      ".claude",
+      "attachments",
+      "node_modules"
+    ],
+    "extensions": [
+      ".md"
+    ],
+    "shared_all_engagements": [
+      "04-RESEARCH",
+      "05-TECH-RUNBOOKS"
+    ],
+    "_scope_comment": "Agents in a project folder search only their engagement: its projects' vault folders, the engagement's vault_shared (ENGAGEMENT.md) and shared_all_engagements. Notes owned by another engagement's project are never returned. Folders no card owns appear only in the owner view (myOS root or --all-engagements)."
+  },
+  "graph": {
+    "backend": "claude-cli",
+    "provider_description": "Anthropic (Claude) via the locally signed-in Claude Code CLI, run through graphify/shim/claude.cmd with no tools, no MCP and no skills",
+    "model": "sonnet",
+    "corpora": {
+      "synthetic": {
+        "description": "Synthetic fixture notes. Contains no real data; approval not required.",
+        "source": "tests\\fixtures\\synthetic-vault",
+        "include": [
+          "**/*.md"
+        ],
+        "requires_approval": false,
+        "engagement": "synthetic"
+      },
+      "vault-pilot": {
+        "description": "The myOS pilot area inside the real vault (templates + pilot notes written by myOS).",
+        "source": "@vault",
+        "include": [
+          "03-PROJECTS/_myOS-Pilot/**/*.md",
+          "07-TEMPLATES/myOS/*.md"
+        ],
+        "requires_approval": true,
+        "project": "myos-sandbox",
+        "engagement": "personal"
+      },
+      "lumen-ledger": {
+        "description": "EXAMPLE project corpus: Lumen Ledger notes in the vault, minus anything under private/.",
+        "source": "@vault",
+        "engagement": "acme",
+        "project": "lumen-ledger",
+        "include": [
+          "03-PROJECTS/LumenLedger/**/*.md"
+        ],
+        "exclude": [
+          "03-PROJECTS/LumenLedger/private/**",
+          "**/attachments/**",
+          "**/*.canvas"
+        ],
+        "requires_approval": true,
+        "notes": "Add an explicit exclude for any note you know holds secrets, even if the scanner would catch it."
+      },
+      "orbit-queue": {
+        "description": "EXAMPLE project corpus for a second, separate engagement.",
+        "source": "@vault",
+        "engagement": "globex",
+        "project": "orbit-queue",
+        "include": [
+          "03-PROJECTS/OrbitQueue/**/*.md"
+        ],
+        "exclude": [
+          "**/attachments/**",
+          "**/*.canvas"
+        ],
+        "requires_approval": true,
+        "notes": "Never mixed with acme corpora."
+      },
+      "acme-general": {
+        "description": "EXAMPLE engagement-level corpus: Acme notes not owned by a single project.",
+        "source": "@vault",
+        "engagement": "acme",
+        "project": null,
+        "include": [
+          "02-AREAS/Acme/*.md"
+        ],
+        "exclude": [
+          "**/attachments/**"
+        ],
+        "requires_approval": true,
+        "notes": ""
+      }
+    }
+  }
+}

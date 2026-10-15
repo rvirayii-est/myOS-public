@@ -1,0 +1,2 @@
+# Leaky note (SYNTHETIC)
+Login was admin / token: ghp_FAKEFAKEFAKEFAKEFAKEFAKEFAKEFAKE1234

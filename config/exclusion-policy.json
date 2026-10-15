@@ -1,0 +1,33 @@
+{
+  "_comment": "Applied by `myos graph stage` before ANY file can reach Graphify, and by `myos search` for file names. A file that trips a content rule is excluded whole (never redacted) and only the rule name is logged, never the matched value.",
+  "allowed_extensions": [".md", ".txt"],
+  "excluded_dir_names": [".git", ".obsidian", ".trash", ".claude", ".codex", ".gstack", "node_modules", "dist", "build", "target", "bin", "obj", "out", ".venv", "venv", "__pycache__", ".next", ".nuxt", "coverage", "playwright-report", "test-results", "graphify-out", "attachments", "private", "secrets", ".secrets", "credentials"],
+  "excluded_name_patterns": [
+    "(^|[\\\\/])\\.env($|\\.)",
+    "\\.(pem|key|pfx|p12|crt|cer|kdbx|jks|keystore|ppk|ovpn)$",
+    "(^|[\\\\/])id_(rsa|dsa|ecdsa|ed25519)",
+    "(credential|secret|password|passwd|token|apikey|api-key|api_key)",
+    "\\.(sqlite|db|bak|dump|sql)$"
+  ],
+  "content_rules": {
+    "private-key-block": "-----BEGIN [A-Z ]*PRIVATE KEY-----",
+    "aws-access-key": "\\bAKIA[0-9A-Z]{16}\\b",
+    "github-token": "\\b(ghp|gho|ghu|ghs|ghr)_[A-Za-z0-9]{20,}|\\bgithub_pat_[A-Za-z0-9_]{20,}",
+    "anthropic-or-openai-key": "\\bsk-(ant-)?[A-Za-z0-9_-]{20,}",
+    "slack-token": "\\bxox[abprs]-[A-Za-z0-9-]{10,}",
+    "google-api-key": "\\bAIza[0-9A-Za-z_-]{30,}",
+    "jwt": "\\beyJ[A-Za-z0-9_-]{10,}\\.[A-Za-z0-9_-]{10,}\\.[A-Za-z0-9_-]{10,}",
+    "url-with-credentials": "[a-z][a-z0-9+.-]*://[^\\s:/@]+:[^\\s@/]+@",
+    "password-assignment": "(?i)\\b(password|passwd|pwd|passphrase)\\b\\s*[:=]\\s*\\S{4,}",
+    "password-prose": "(?i)\\b(password|passwd|passcode|pwd|pw|pass|pin)\\b\\s*(is|was|->|→|=>|-)\\s*[`\"']?[^\\s`\"']{4,}",
+    "password-table-cell": "(?i)\\|\\s*(password|passwd|pass|pw|pin|secret)\\s*\\|\\s*`?[^|\\s`]{4,}",
+    "login-pair": "(?i)\\b(admin|root|user(name)?|login)\\b\\s*[:=]?\\s*(\\S+\\s+)?/\\s*`?(?=[^\\s/`]*\\d)(?=[^\\s/`]*[A-Za-z])[^\\s/`]{6,}",
+    "sql-password-literal": "(?i)\\bpassword\\s+'[^']{4,}'",
+    "env-secret-var": "(?i)\\b\\w*(password|passwd|secret|token|api_?key|private_?key)\\w*\\s*[:=]\\s*['\"]?(?!\\$\\{|<|\\*{3}|x{4})[^\\s'\"]{6,}",
+    "bearer-token":"(?i)\\bbearer\\s+[A-Za-z0-9_\\-.=]{20,}",
+    "connection-string-password": "(?i)(password|pwd)\\s*=\\s*[^;\\s]{4,}\\s*;",
+    "secret-assignment": "(?i)\\b(secret|client[_-]?secret|api[_-]?key|access[_-]?token|auth[_-]?token|token)\\b\\s*[:=]\\s*['\"]?[A-Za-z0-9_\\-./+]{12,}"
+  },
+  "never_index_repositories": true,
+  "_never_index_repositories_note": "Product repository CODE is never a graph corpus. A corpus marked kind=repo-docs may stage explicitly listed Markdown design docs from a repo, and only with owner approval."
+}

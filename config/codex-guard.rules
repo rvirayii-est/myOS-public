@@ -1,0 +1,28 @@
+# myOS guard for Codex (installed by scripts/install.ps1 as myos-guard.rules into
+# ~/.codex/rules and %APPDATA%/orca/codex-runtime-home/home/rules).
+# "forbidden" is enforced even with --dangerously-bypass-approvals-and-sandbox (verified 2026-10-15).
+# Prefix rules match the start of a parsed command, so flags written in another order may slip
+# through. The Claude-side hook (scripts/guard.py) is regex-based and broader.
+
+# canary used by the verification suite (harmless, non-existent command)
+prefix_rule(pattern=["myos-guard-selftest"], decision="forbidden", justification="myOS guard self-test")
+
+# destructive git
+prefix_rule(pattern=["git", "push", ["--force", "-f", "--force-with-lease", "--mirror", "--delete", "-d"]], decision="forbidden", justification="myOS guard: force-push / remote branch deletion - owner runs it manually")
+prefix_rule(pattern=["git", "push", "origin", ["--force", "-f", "--force-with-lease", "--mirror", "--delete", "-d"]], decision="forbidden", justification="myOS guard: force-push / remote branch deletion - owner runs it manually")
+prefix_rule(pattern=["git", "reset", "--hard"], decision="forbidden", justification="myOS guard: git reset --hard discards work")
+prefix_rule(pattern=["git", "clean", ["-f", "-fd", "-df", "-fdx", "-xdf", "-fx", "-xf", "-dfx", "--force"]], decision="forbidden", justification="myOS guard: git clean -f deletes untracked files")
+prefix_rule(pattern=["git", "branch", ["-D", "--delete"]], decision="forbidden", justification="myOS guard: branch deletion - owner runs it manually")
+prefix_rule(pattern=["git", "worktree", "remove"], decision="forbidden", justification="myOS guard: worktree removal - use Orca or run it manually")
+prefix_rule(pattern=["git", "stash", ["clear", "drop"]], decision="forbidden", justification="myOS guard: destroys stashes")
+prefix_rule(pattern=["git", ["filter-branch", "filter-repo"]], decision="forbidden", justification="myOS guard: history rewrite")
+prefix_rule(pattern=["git", "checkout", "--", "."], decision="forbidden", justification="myOS guard: discards all uncommitted changes")
+prefix_rule(pattern=["git", "restore", "."], decision="forbidden", justification="myOS guard: discards all uncommitted changes")
+
+# database wipes
+prefix_rule(pattern=["flyway", "clean"], decision="forbidden", justification="myOS guard: flyway clean drops everything")
+prefix_rule(pattern=["supabase", "db", "reset"], decision="forbidden", justification="myOS guard: resets the database")
+prefix_rule(pattern=["dotnet", "ef", "database", "drop"], decision="forbidden", justification="myOS guard: drops the database")
+
+# Graphify approval gate: only `myos graph ...` may drive Graphify; only the owner approves
+prefix_rule(pattern=["graphify", ["extract", "update", "watch", "install", "uninstall", "hook", "claude", "codex", "add", "clone", "label", "cluster-only"]], decision="forbidden", justification="myOS guard: run Graphify through `myos graph` (exclusion policy + approval)")

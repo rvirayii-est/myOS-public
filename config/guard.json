@@ -1,0 +1,20 @@
+{
+  "_comment": "myOS safety guard (scripts/guard.py for Claude Code, config/codex-guard.rules for Codex). Works under bypass/Yolo modes: deny = blocked outright, ask = the owner must confirm in the UI (headless runs treat ask as blocked). Set MYOS_GUARD=off in the environment before launching an agent to disable for that session.",
+  "production_hosts": {
+    "app.example-prod.com": "EXAMPLE production host - replace with your own (live system)",
+    "uat.example-prod.com": "EXAMPLE staging host that shares the production box - replace or remove"
+  },
+  "secret_file_patterns": [
+    "(^|[\\\\/])\\.env(\\.(?!example\\b|sample\\b|template\\b|dist\\b)[A-Za-z0-9_-]+)?$",
+    "\\.(pem|key|pfx|p12|kdbx|ppk|jks|keystore)$",
+    "(^|[\\\\/])id_(rsa|dsa|ecdsa|ed25519)$",
+    "(^|[\\\\/])\\.?credentials(\\.json)?$",
+    "(^|[\\\\/])(auth|secrets?|service-account)\\.json$",
+    "(^|[\\\\/])\\.(npmrc|pgpass|netrc|git-credentials|pypirc)$"
+  ],
+  "cross_engagement": "ask",
+  "ask_as": "ask",
+  "_ask_as_note": "Set to \"deny\" to turn every ask into a hard block. Use this if bypass-mode sessions do not actually show the confirmation prompt (UNVERIFIED for interactive Yolo sessions; headless -p always blocks).",
+  "log": "logs/guard.log",
+  "_hosts_note": "Commands that mutate these hosts (ssh, scp, deploy, POST/PUT/DELETE...) are denied unless the session sets MYOS_GUARD_ALLOW=production-host. Read-only health checks are allowed."
+}

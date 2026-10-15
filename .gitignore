@@ -1,0 +1,12 @@
+# Generated / private - never commit
+data/
+logs/
+backups/
+graphify/.venv/
+config/graph-approvals.json
+config/*.local.json
+__pycache__/
+*.pyc
+*.myos-tmp-*
+.env
+.env.*

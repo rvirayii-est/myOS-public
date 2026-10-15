@@ -1,0 +1,3 @@
+#!/bin/sh
+# myOS: run the npm-installed Codex CLI (same build Orca uses).
+exec "$(cygpath -u "$APPDATA")/npm/codex" "$@"
