@@ -1586,7 +1586,7 @@ def corpora_covering(path: Path) -> list[str]:
 
 def run_graphify(args: list[str]) -> int:
     if not GRAPHIFY_EXE.exists():
-        die(f"Graphify not installed at {GRAPHIFY_EXE}. Run scripts\\setup.ps1.")
+        die(f"Graphify not installed at {GRAPHIFY_EXE}. See docs/graphify.md (Install).")
     env = dict(os.environ)
     env["PATH"] = str(SHIM_DIR) + os.pathsep + env.get("PATH", "")  # hardened claude.cmd first
     env["GRAPHIFY_CLAUDE_CLI_MODEL"] = cfg()["graph"]["model"]

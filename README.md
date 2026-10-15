@@ -21,7 +21,7 @@ request -> project identity (myos route) -> ICM card -> Graphify edges (approved
 
 ## Quick start (demo data included)
 ```powershell
-git clone <this repo> C:\projects\myOS
+git clone https://github.com/rvirayii-est/myOS-public.git C:\projects\myOS
 cd C:\projects\myOS
 python scripts\myos.py list                                   # three example engagements, three projects
 python scripts\myos.py route lumen                            # alias routing

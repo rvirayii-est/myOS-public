@@ -253,7 +253,7 @@ def decide(tool: str, ti: dict, cwd: str) -> tuple[str, str, str] | None:
         return "ask", "secret-read", "reading a secret file (.env / key / credentials) would expose its contents"
 
     # self-protection: changing the guard itself needs the owner
-    rn = re.escape(ROOT.name)  # wherever myOS is installed; the folder need not be called myOS
+    rn = "(?:myOS|" + re.escape(ROOT.name) + ")"  # the default folder name and wherever this copy is installed
     GUARD_FILES = (r"(?i)(" + rn + r"[\\/]config[\\/]guard\.json|" + rn + r"[\\/]scripts[\\/]guard\.py"
                    r"|myos-guard\.rules|codex-guard\.rules)")
     if tool in ("Edit", "Write", "MultiEdit") and re.search(GUARD_FILES, str(ti.get("file_path", ""))):

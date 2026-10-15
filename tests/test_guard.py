@@ -56,7 +56,9 @@ class TestDeny(unittest.TestCase):
     def test_recursive_delete_of_protected_roots(self):
         for c in [f'rm -rf "{LUMEN_REPO}"', f'Remove-Item -Recurse -Force "{LUMEN_REPO}"',
                   f'rm -rf "{VAULT}"', f'rmdir /s /q "{PROJECTS}"',
-                  r"rm -rf .git", r"Remove-Item -Recurse -Force ~/.claude", "rm -rf ."]:
+                  r"rm -rf .git", r"Remove-Item -Recurse -Force ~/.claude", "rm -rf .",
+                  "Remove-Item C:\\ -Recurse", 'Remove-Item -Recurse -Force "C:\\"', "rm -rf C:/", "rm -rf /c/",
+                  "rmdir /s /q C:\\"]:  # drive root
             self.assertEqual(d(c), "deny", c)
 
     def test_database(self):
